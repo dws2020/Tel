@@ -1,6 +1,7 @@
 <script>
     // import { jsEmpList } from '../public/empList.js';
     import { createEventDispatcher } from 'svelte';
+    import { afterUpdate } from 'svelte';
     export let belongs;
 
     // コンポーネント内共通変数
@@ -8,6 +9,12 @@
     const orderedEmpList = jsEmpList.sort((a, b) => a.kana.localeCompare(b.kana));
     let empOfBelongs     = [];
     $: empOfBelongs      = orderedEmpList.filter(emp => emp.belongs === belongs);
+
+    // 職員リストが表示された際に、一番上から表示する。
+    afterUpdate( () => {
+        const empCardsArea = document.querySelector('.emp-cards-area');
+        empCardsArea.scrollTop= 0;
+    });
 
     // イベントハンドラー
     const handleEmpClick = (event) => {
@@ -48,6 +55,8 @@
             {head: "ワ", body: ["ﾜ", "ｦ", "ﾝ"]}
         ]
         let resultArray = AllKana.filter(objKana => objKana.body.includes(targetLetter));
+        // フリガナが半角カタカナ以外の時のエスケープ処理
+        if (resultArray.length === 0) resultArray.push({head: 'ア'});
         return resultArray[0].head;
     }
 
