@@ -28,6 +28,7 @@
             ele.classList.remove('checked');
         });
     }
+    
 
     const goPrint = (event) => {
         if (callTarget == '') {
